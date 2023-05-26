@@ -1,15 +1,14 @@
 const express = require('express')
 require('dotenv').config()
 const mongoose = require('mongoose')
+const userRoutes = require("./routes/userRoutes")
 
 const app = express()
 app.use(express.json())
 
 
+app.use("/user",userRoutes)
 
-app.get("/ok",(req,res)=>{
-    res.send("ok working")
-})
 
 mongoose.connect(process.env.MONGO_url).then(()=>{
     console.log("sucessfully connected")
