@@ -6,17 +6,17 @@ const validator = require('validator')
 exports.register =  async (req,res)=>{
     try {
         const { name, email, password } = req.body;
-
+           
        
         if (!email || !name || !password) {
-            res.status(400).json("All field are required")
+           return res.status(400).json("All field are required")
         }
         if(!validator.isEmail(email)){
-            res.status(400).json("Email should be valid")
+           return res.status(400).json("Email should be valid")
         }
         let User = await user.findOne({ email });
         if (User) {
-            res.status(400).json({ "message": "User alerdy exist" })
+           return res.status(400).json({ "message": "User alerdy exist" })
         }
 
         User = new user({name,email,password})
@@ -25,12 +25,13 @@ exports.register =  async (req,res)=>{
 
         const token = await User.getJWTToken()
 
-        res.status(200).json({"token":token})
+        res.status(200).json({_id:User._id,name,email,token})
 
         
 
        
     } catch (error) {
+        console.log(error)
         res.status(500).json(error)
     }
 
@@ -40,21 +41,21 @@ exports.login = async (req,res)=>{
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            res.status(400).json("All field are required")
+           return res.status(400).json("All field are required")
         }
         let User = await user.findOne({ email })
 
         if (!User) {
-            res.status(400).json("No user exist")
+           return res.status(400).json("No user exist")
         }
         const isMatch = await User.matchPassword(password);
 
         if (!isMatch) {
-           res.status(400).json("Invalid Creditails")
+          return res.status(400).json("Invalid Creditails")
         }
 
         const token = await User.getJWTToken()
-        res.status(200).json({"user":User,"token":token})
+        res.status(200).json({ _id: User._id, name:User.name, email, token })
 
 
     } catch (error) {
@@ -76,6 +77,20 @@ exports.findUser = async(req,res)=>{
         res.status(500).json(error)
     }
    
+}
+
+exports.getUser = async (req,res)=>{
+    try {
+        const User = await user.find({})
+
+        res.status(200).json(User)
+        
+    } catch (error) {
+        res.status(500).json(error)
+    }
+
+
+
 }
 
 
