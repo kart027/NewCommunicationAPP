@@ -4,7 +4,7 @@ const { createMessage,getMessage } = require("../controllers/messageControllers"
 
 
 router.route("/create").post(createMessage);
-router.route("/:chatId").post(getMessage);
+router.route("/:chatId").get(getMessage);
 
 
 module.exports = router;

@@ -4,8 +4,8 @@ const { createChat,findChat,findUserChat } = require("../controllers/chatControl
 
 
 router.route("/create").post(createChat);
-router.route("/:userId").post(findUserChat);
-router.route("/find/:firstId/:secondId").post(findChat)
+router.route("/:userId").get(findUserChat);
+router.route("/find/:firstId/:secondId").get(findChat)
 
 
 module.exports = router;

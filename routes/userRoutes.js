@@ -6,6 +6,6 @@ const {register,login,findUser, getUser} = require("../controllers/userControlle
 router.route("/register").post(register);
 router.route("/login").post(login);
 router.route("/finduser/:_id").get(findUser)
-router.route("/getUser",getUser)
+router.route("/getUser").get(getUser)
 
 module.exports = router;
